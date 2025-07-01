@@ -7,11 +7,20 @@ async function get_stocks(stocks, res) {
   for (const stock of stocks) {
     results.push(await fetch(proxy_url(stock)).then(y => y.json()))
   }
-  res.json(results)
+  let result = results.map((x,i) => ({
+    stock: stocks[i],
+    price: x.latestPrice,
+    rel_likes: 0
+  }))
+  if (result.length == 1) {
+    result = result[0]
+    result.likes = 0;
+    delete result.rel_likes;
+  }
+  res.json({stockData: result})
 }
 
 module.exports = function (app) {
-
   app.route('/api/stock-prices')
     .get(function (req, res) {
       let stock = req.query.stock;
