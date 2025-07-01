@@ -13,7 +13,7 @@ suite('Functional Tests', () => {
             .end((_err, res) => {
                 assert.equal(res.status, 200)
                 assert.property(res.body, "stockData")
-                assert.equal(res.body.stockData.stock, "goog")
+                assert.equal(res.body.stockData.stock, "GOOG")
                 assert.property(res.body.stockData, "likes")
                 done()
             })
@@ -25,7 +25,7 @@ suite('Functional Tests', () => {
             .end((_err, res) => {
                 assert.equal(res.status, 200)
                 assert.property(res.body, "stockData")
-                assert.equal(res.body.stockData.stock, "goog")
+                assert.equal(res.body.stockData.stock, "GOOG")
                 assert.property(res.body.stockData, "likes")
                 done()
             })
@@ -34,11 +34,10 @@ suite('Functional Tests', () => {
         chai
             .request(server)
             .get('/api/stock-prices?stock=goog&like=true')
-            .send({ stock: 'GOOG', like: true })
             .end((_err, res) => {
                 assert.equal(res.status, 200)
                 assert.property(res.body, "stockData")
-                assert.equal(res.body.stockData.stock, "goog")
+                assert.equal(res.body.stockData.stock, "GOOG")
                 assert.property(res.body.stockData, "likes")
                 done()
             })
@@ -46,14 +45,13 @@ suite('Functional Tests', () => {
     test('Viewing two stocks: GET request to /api/stock-prices/', done => {
         chai
             .request(server)
-            .get('/api/stock-prices?stock=goog&stock=msfit&like=true')
-            .send({ stock: ['goog', 'msfit'], like: true })
+            .get('/api/stock-prices?stock=goog&stock=msft&like=false')
             .end((_err, res) => {
                 assert.equal(res.status, 200)
                 assert.property(res.body, "stockData")
                 assert.typeOf(res.body.stockData, "array")
                 assert.equal(res.body.stockData.length, 2)
-                assert.equal(res.body.stockData[0].stock, "goog")
+                assert.equal(res.body.stockData[0].stock, "GOOG")
                 assert.property(res.body.stockData[1], "rel_likes")
                 done()
 
@@ -62,14 +60,13 @@ suite('Functional Tests', () => {
     test('Viewing two stocks and liking them: GET request to /api/stock-prices/', done => {
         chai
             .request(server)
-            .get('/api/stock-prices?stock=goog&stock=msfit&like=true')
-            .send({ stock: ['goog', 'msfit'], like: true })
+            .get('/api/stock-prices?stock=goog&stock=msft&like=true')
             .end((_err, res) => {
                 assert.equal(res.status, 200)
                 assert.property(res.body, "stockData")
                 assert.typeOf(res.body.stockData, "array")
                 assert.equal(res.body.stockData.length, 2)
-                assert.equal(res.body.stockData[0].stock, "goog")
+                assert.equal(res.body.stockData[0].stock, "GOOG")
                 assert.property(res.body.stockData[1], "rel_likes")
                 done()
             })
